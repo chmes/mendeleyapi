@@ -18,6 +18,7 @@ for jahr in range(2003,2013): # letzte zehn jahre: von 2003 bis 2012 (trotzdem i
     print str(jahr) + ":"
     print "    "+str(response['total_results'])+" Publikationen"
     publikationen10[jahr]=response['total_results']
+#in json datei speichern
 with open("aufgabe1.json", "w") as json_output:
     json.dump(publikationen10, json_output)
 print "\n ---------------------- \n"
