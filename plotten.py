@@ -39,3 +39,12 @@ with open("aufgabe2.json", "r") as json_input:
     top20 = json.load(json_input)
 plot_balken(top20, 'Top20 Tags in der Kategorie "Computer and Information Science"', 'Tags', 'Anzahl Tags')
 
+# Aufgabe 4a
+with open("aufgabe4a.json", "r") as json_input:
+    pub_jahre = json.load(json_input)
+plot_balken(pub_jahre, 'Publikationsanzahl nach Jahren von Wolfgang G Stock', 'Jahr', 'Anzahl Publikationen')
+
+# Aufgabe 4b
+with open("aufgabe4b.json", "r") as json_input:
+    coAutoren = json.load(json_input)
+plot_balken(coAutoren, 'Co-Autoren von Wolfgang G Stock', 'Co-Autor', 'Anzahl gemeinsamer Publikationen')

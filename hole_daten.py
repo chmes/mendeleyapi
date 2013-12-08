@@ -9,6 +9,7 @@ import os, sys, json
 mendeley = create_client()
 
 
+
 # aufgabe 1: Wie verteilen sich die in Mendeley abgelegten Publikationen auf die letzten 10 Jahre?
 # (Dafür müssen nicht alle Publikationen heruntergeladen werden!)
 print "Papers:\n"
@@ -50,13 +51,34 @@ print "\n ---------------------- \n"
 
 # aufgabe 4: Auflistung aller Publikationen von Prof. Wolfgang G. Stock
 # (Extrahiere diese Daten automatisch mit Hilfe von Python!)
+#      -Erstelle ein Diagramm der Publikationsanzahl über die vorhandenen Jahre
+#      -Erstelle ein Ranking aller Co-Autoren mit denen Prof. Stock
+#       zusammengearbeitet hat nach Anzahl der in Mendeley vorhandenen,
+#       gemeinsamen Publikationen.
 response = mendeley.authored('"Wolfgang G Stock"', items=500)
 print "Publikationen von Stock\n"
+pub_jahre = {}
+coAutoren = {}
 for publikation in response['documents']:
+    # Aufgabenteil a
     print str(publikation['year']) + ": " + publikation['title']
+    if publikation['year'] in pub_jahre:
+        pub_jahre[publikation['year']]+=1
+    else:
+        pub_jahre[publikation['year']]=1   
+    with open("aufgabe4a.json", "w") as json_output:
+        json.dump(pub_jahre, json_output)
+    #Aufgabenteil b
     print "    Autoren:"
     for autor in publikation['authors']:
         print "            " + autor['forename'] + " " + autor['surname']
+        if autor['forename']!="Wolfgang G." and autor['surname']!="Stock":
+            if autor['surname'] in coAutoren:
+                coAutoren[autor['surname']]+=1
+            else:
+                coAutoren[autor['surname']]=1
+    with open("aufgabe4b.json", "w") as json_output:
+        json.dump(coAutoren, json_output)
     print "\n"
 print "\n ---------------------- \n"
 
@@ -70,3 +92,4 @@ for eintrag in cat_response: # jede kategorie durchgehen
     print eintrag['name'] + " (ID " + str(eintrag['id']) + "): "
     print "    "+ str(response['total_results']) + " Ergebnisse\n" 
 print "\n ---------------------- \n"
+
