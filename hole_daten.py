@@ -5,16 +5,21 @@ from pprint import pprint
 from mendeley_client import *
 import os, sys, json
 
+
 mendeley = create_client()
 
 
 # aufgabe 1: Wie verteilen sich die in Mendeley abgelegten Publikationen auf die letzten 10 Jahre?
 # (Dafür müssen nicht alle Publikationen heruntergeladen werden!)
 print "Papers:\n"
+publikationen10 = {}
 for jahr in range(2003,2013): # letzte zehn jahre: von 2003 bis 2012 (trotzdem in range 2013 angeben)
     response = mendeley.search('year:'+str(jahr))
     print str(jahr) + ":"
     print "    "+str(response['total_results'])+" Publikationen"
+    publikationen10[jahr]=response['total_results']
+with open("aufgabe1.json", "w") as json_output:
+    json.dump(publikationen10, json_output)
 print "\n ---------------------- \n"
 
 
@@ -22,8 +27,12 @@ print "\n ---------------------- \n"
 # hole die top 20 tags aus der kategorie "computer and information science"
 response = mendeley.tag_stats(6) # 6 ist die kategorie-id
 print "Top 20 Tags in Kategorie 'Computer and information science'\n"
+top20 = {}
 for tag in response:
+    top20[tag['name']]=tag['count']
     print tag['name'] +": "+ str(tag['count']) + " mal"
+with open("aufgabe2.json", "w") as json_output:
+    json.dump(top20, json_output)
 print "\n ---------------------- \n"
 
 
@@ -33,7 +42,7 @@ print "\n ---------------------- \n"
 # wir könnten über search danach suchen, haben dann aber kein ranking nach popularität
 response = mendeley.search('published_in:Nature', items=100)
 print "Top 10 Publikationen in Zeitschrift 'Nature'\n"
-# pprint(response)
+#pprint(response)
 print "anfrage muss noch verbessert werden"
 print "\n ---------------------- \n"
 
@@ -60,5 +69,3 @@ for eintrag in cat_response: # jede kategorie durchgehen
     print eintrag['name'] + " (ID " + str(eintrag['id']) + "): "
     print "    "+ str(response['total_results']) + " Ergebnisse\n" 
 print "\n ---------------------- \n"
-
-
